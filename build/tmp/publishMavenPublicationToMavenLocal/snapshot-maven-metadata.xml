@@ -3,7 +3,7 @@
   <groupId>com.anyonehub</groupId>
   <artifactId>abl-runtime-compiler</artifactId>
   <versioning>
-    <lastUpdated>20260819170703</lastUpdated>
+    <lastUpdated>20260819181750</lastUpdated>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
@@ -11,13 +11,12 @@
       <snapshotVersion>
         <extension>pom</extension>
         <value>1.0-SNAPSHOT</value>
-        <updated>20260819170703</updated>
+        <updated>20260819181750</updated>
       </snapshotVersion>
       <snapshotVersion>
-        <classifier>all</classifier>
         <extension>jar</extension>
         <value>1.0-SNAPSHOT</value>
-        <updated>20260819170703</updated>
+        <updated>20260819181750</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

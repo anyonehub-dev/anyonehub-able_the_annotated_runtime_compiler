@@ -33,8 +33,12 @@ dependencies {
     implementation("com.android.tools.build:apksig:8.5.0")
 }
 
+tasks.named<Jar>("jar") {
+    archiveClassifier.set("original")
+}
+
 tasks.named<Jar>("shadowJar") {
-    archiveClassifier.set("all")
+    archiveClassifier.set("")
     // Note: minimize() is intentionally not called to preserve reflection targets and dynamic apksig classes.
 }
 
