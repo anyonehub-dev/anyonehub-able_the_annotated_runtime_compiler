@@ -98,6 +98,7 @@ tasks.named<ShadowJar>("shadowJar") {
         exclude(dependency("org.jetbrains.kotlin:kotlin-reflect.*"))
         exclude(dependency("org.jetbrains.kotlin:kotlin-script-runtime.*"))
         exclude(dependency("org.jetbrains.kotlin:kotlin-script.*"))
+        exclude(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-.*"))
         exclude(dependency("com.android.tools:.*"))
         exclude(dependency("com.android.tools.build:.*"))
         exclude(dependency("com.android.tools.r8:.*"))
