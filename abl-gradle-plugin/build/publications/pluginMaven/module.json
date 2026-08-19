@@ -53,7 +53,7 @@
           "group": "com.anyonehub",
           "module": "abl-runtime-compiler",
           "version": {
-            "requires": "1.0-SNAPSHOT"
+            "requires": "1.0.0"
           }
         }
       ],

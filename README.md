@@ -35,15 +35,15 @@ In your consumer project's `build.gradle.kts`, apply the plugin and define the A
 
 ```kotlin
 plugins {
-    id("abl.runtime.compiler") version "1.0-SNAPSHOT"
+    id("abl.runtime.compiler") version "1.0.0"
 }
 
 dependencies {
     // 1. The runtime engine dependency (analogous to hilt-android)
-    implementation("com.anyonehub:abl-runtime-compiler:1.0-SNAPSHOT")
+    implementation("com.anyonehub:abl-runtime-compiler:1.0.0")
 
     // 2. The dedicated ABL compiler/processor dependency (analogous to hilt-compiler / ksp)
-    abl("com.anyonehub:abl-compiler:1.0-SNAPSHOT")
+    abl("com.anyonehub:abl-compiler:1.0.0")
 }
 
 abl {
