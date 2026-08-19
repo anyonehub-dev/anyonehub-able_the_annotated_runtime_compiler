@@ -96,6 +96,8 @@ tasks.named<ShadowJar>("shadowJar") {
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib.*"))
         exclude(dependency("org.jetbrains.kotlin:kotlin-reflect.*"))
+        exclude(dependency("org.jetbrains.kotlin:kotlin-script-runtime.*"))
+        exclude(dependency("org.jetbrains.kotlin:kotlin-script.*"))
     }
 }
 
