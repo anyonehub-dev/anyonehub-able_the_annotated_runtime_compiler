@@ -13,6 +13,9 @@ import kotlin.reflect.full.declaredMemberFunctions
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
 
+import com.anyonehub.abl.cache.AblCacheManager
+import com.anyonehub.abl.cache.ScannedMetadataFbsData
+
 /**
  * Represents the raw metadata extracted from scanning a single class.
  */
@@ -25,7 +28,7 @@ data class ScannedMetadata(
     val injectableConstructorParameters: Boolean
 )
 
-class AblRuntimeScanner {
+class AblRuntimeScanner(private val cacheManager: AblCacheManager? = null) {
 
     /**
      * Sweeps the target's members, properties, and constructors using reflection.
@@ -57,9 +60,58 @@ class AblRuntimeScanner {
     }
     
     /**
-     * Batch scans multiple targets.
+     * Batch scans multiple targets, utilizing FlatBuffers cache if available.
      */
     fun scanMultiple(targets: List<KClass<*>>): List<ScannedMetadata> {
-        return targets.map { scan(it) }
+        if (cacheManager != null) {
+            val cached = cacheManager.loadCache()
+            if (cached != null && cached.isNotEmpty()) {
+                println("AblRuntimeScanner: Loaded AST metadata from FlatBuffers cache")
+                return cached.map { restoreFromCache(it) }
+            }
+        }
+        
+        println("AblRuntimeScanner: Performing reflective sweep")
+        val scanned = targets.map { scan(it) }
+        
+        if (cacheManager != null) {
+            val fbsData = scanned.map { convertToFbsData(it) }
+            cacheManager.saveCache(fbsData)
+            println("AblRuntimeScanner: Saved AST metadata to FlatBuffers cache")
+        }
+        
+        return scanned
+    }
+    
+    private fun restoreFromCache(cachedData: ScannedMetadataFbsData): ScannedMetadata {
+        val kClass = Class.forName(cachedData.targetClass).kotlin
+        
+        val entryPoints = cachedData.entryPoints.mapNotNull { name ->
+            kClass.declaredMemberFunctions.firstOrNull { it.name == name }
+        }
+        
+        val injectables = cachedData.injectableProperties.mapNotNull { name ->
+            kClass.declaredMemberProperties.firstOrNull { it.name == name }
+        }
+        
+        return ScannedMetadata(
+            targetClass = kClass,
+            isModule = cachedData.isModule,
+            isCompileTarget = cachedData.isCompileTarget,
+            entryPoints = entryPoints,
+            injectableProperties = injectables,
+            injectableConstructorParameters = cachedData.injectableConstructorParameters
+        )
+    }
+    
+    private fun convertToFbsData(metadata: ScannedMetadata): ScannedMetadataFbsData {
+        return ScannedMetadataFbsData(
+            targetClass = metadata.targetClass.java.name,
+            isModule = metadata.isModule,
+            isCompileTarget = metadata.isCompileTarget,
+            entryPoints = metadata.entryPoints.map { it.name },
+            injectableProperties = metadata.injectableProperties.map { it.name },
+            injectableConstructorParameters = metadata.injectableConstructorParameters
+        )
     }
 }

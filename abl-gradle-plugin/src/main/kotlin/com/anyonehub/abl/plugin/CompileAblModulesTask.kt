@@ -70,7 +70,9 @@ abstract class CompileAblModulesTask : DefaultTask() {
             sourcesMap[fqName] = content
         }
 
-        val scanner = AblRuntimeScanner()
+        val cacheFile = File(project.layout.buildDirectory.get().asFile, "intermediates/abl_cache/ast.fbs")
+        val cacheManager = com.anyonehub.abl.cache.AblCacheManager(cacheFile)
+        val scanner = AblRuntimeScanner(cacheManager)
         val graphBuilder = DependencyGraphBuilder()
         val compilerBridge = AblCompilerBridgeImpl()
         val dexProcessor = RuntimeDexProcessor()

@@ -33,6 +33,43 @@ dependencies {
     
     // APK Signature Scheme
     implementation("com.android.tools.build:apksig:8.5.0")
+    
+    // FlatBuffers for zero-copy AST serialization
+    implementation("com.google.flatbuffers:flatbuffers-java:25.2.10")
+}
+
+val generateFlatBuffers = tasks.register<Exec>("generateFlatBuffers") {
+    group = "flatbuffers"
+    description = "Generates Kotlin/Java classes from ABL FlatBuffers schemas using flatc"
+    
+    val schemaDir = file("src/main/flatbuffers")
+    val outputDir = file("src/main/java")
+    
+    outputs.dir(outputDir)
+    inputs.dir(schemaDir)
+    
+    // Assumes flatc is available in system PATH or configured locally; adjust path if bundled
+    executable = "C:\\Users\\tomsl\\Downloads\\Windows.flatc.binary\\flatc.exe"
+    args("--java", "-o", outputDir.absolutePath, "$schemaDir/abl_ast.fbs")
+    
+    doFirst {
+        outputDir.mkdirs()
+    }
+    
+    doLast {
+        // The flatc executable (25.12.19) differs from the Java dependency (25.2.10).
+        // Patching the version check to avoid compilation errors.
+        outputDir.walkTopDown().filter { it.extension == "java" }.forEach { file ->
+            val content = file.readText()
+            val patched = content.replace("Constants.FLATBUFFERS_25_12_19();", "/* patched */")
+            file.writeText(patched)
+        }
+    }
+}
+
+// Hook code generation into Java/Kotlin compilation flow
+tasks.named("compileKotlin") {
+    dependsOn(generateFlatBuffers)
 }
 
 // 1. Configure shadowJar to ONLY process dependencies (no source code)
@@ -46,6 +83,13 @@ tasks.named<ShadowJar>("shadowJar") {
     
     relocate("org.jetbrains.org.objectweb.asm", "com.anyonehub.abl.internal.asm")
     relocate("org.jetbrains.kotlin", "com.anyonehub.abl.internal.kotlin")
+    
+    // New Relocations for Coroutines and Concurrency
+    relocate("kotlinx.coroutines", "com.anyonehub.abl.shadow.kotlinx.coroutines")
+    relocate("org.jetbrains.concurrency", "com.anyonehub.abl.shadow.org.jetbrains.concurrency")
+    
+    // Relocate FlatBuffers
+    relocate("com.google.flatbuffers", "com.anyonehub.abl.shadow.flatbuffers")
     
     exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
 }

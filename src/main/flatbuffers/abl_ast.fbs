@@ -1,0 +1,16 @@
+namespace com.anyonehub.abl.cache.fbs;
+
+table ScannedMetadataFbs {
+  target_class: string;
+  is_module: bool;
+  is_compile_target: bool;
+  entry_points: [string];
+  injectable_properties: [string];
+  injectable_constructor_parameters: bool;
+}
+
+table SymbolCacheTable {
+  metadata: [ScannedMetadataFbs];
+}
+
+root_type SymbolCacheTable;
