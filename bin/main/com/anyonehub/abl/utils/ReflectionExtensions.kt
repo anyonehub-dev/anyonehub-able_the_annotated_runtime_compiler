@@ -15,6 +15,10 @@ object AnnotationCache {
     fun getAnnotations(kClass: KClass<*>): List<Annotation> {
         return classAnnotationCache.getOrPut(kClass) { kClass.annotations }
     }
+
+    fun clear() {
+        classAnnotationCache.clear()
+    }
 }
 
 /**

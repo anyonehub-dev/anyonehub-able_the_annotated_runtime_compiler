@@ -21,14 +21,10 @@ To conform to modern Android 10+ W^X (Write XOR Execute) security restrictions w
 
 ABL provides a seamless Gradle DSL wrapper for developers aiming to automate the execution pipeline.
 
-### Native Requirements & The `libaapt2.so` Binary
-Because ABL compiles resources directly on the Android device, it requires the native AAPT2 binary to execute. To bypass Android's W^X memory restrictions, this binary must be packaged as if it were a standard JNI library.
+### Native Toolchain Provisioning (CMake & AAPT2)
+Because ABL compiles resources directly on the Android device, it requires native binaries (like CMake and AAPT2) for execution.
 
-1. **Physical Placement:** You **must** download the pre-compiled `aapt2` linux binary for your target architecture (e.g., `linux-aarch64`), rename it to exactly `libaapt2.so`, and place it in your host application's `jniLibs` directory:
-   ```
-   src/main/jniLibs/arm64-v8a/libaapt2.so
-   ```
-2. **Runtime Hook:** The plugin's `aapt2BinaryPath` DSL property must target this specific file via `file("${project.projectDir}/src/main/jniLibs/arm64-v8a/libaapt2.so").absolutePath`. This ensures that the `NativeAapt2Wrapper` ProcessBuilder can securely execute it during the compilation pipeline.
+The ABL Gradle plugin automatically downloads, extracts, and provisions the native toolchain for the `arm64-v8a` architecture during project configuration. The toolchain is bundled securely and paths are managed internally by the plugin, meaning you no longer need to manually manage `jniLibs` assets or DSL properties.
 
 ### Adding the Plugin
 In your consumer project's `build.gradle.kts`, apply the plugin and define the ABL configurations:
@@ -47,7 +43,6 @@ dependencies {
 }
 
 abl {
-    aapt2BinaryPath.set(file("${project.projectDir}/src/main/jniLibs/arm64-v8a/libaapt2.so").absolutePath)
     manifestFile.set(file("src/main/AndroidManifest.xml"))
     resDir.set(file("src/main/res"))
 }

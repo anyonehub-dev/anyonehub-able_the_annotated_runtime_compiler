@@ -26,6 +26,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.4.10")
     implementation("com.android.tools:r8:9.4.12")
     
+    // Eclipse Compiler for Java (ECJ)
+    implementation("org.eclipse.jdt:ecj:3.36.0")
+    
     // APK Signature Scheme
     implementation("com.android.tools.build:apksig:8.5.0")
 }

@@ -3,25 +3,25 @@
   <groupId>com.anyonehub</groupId>
   <artifactId>abl-gradle-plugin</artifactId>
   <versioning>
-    <lastUpdated>20260819162718</lastUpdated>
+    <lastUpdated>20260819170705</lastUpdated>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
     <snapshotVersions>
       <snapshotVersion>
-        <extension>module</extension>
+        <extension>pom</extension>
         <value>1.0-SNAPSHOT</value>
-        <updated>20260819162718</updated>
+        <updated>20260819170705</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar</extension>
         <value>1.0-SNAPSHOT</value>
-        <updated>20260819162718</updated>
+        <updated>20260819170705</updated>
       </snapshotVersion>
       <snapshotVersion>
-        <extension>pom</extension>
+        <extension>module</extension>
         <value>1.0-SNAPSHOT</value>
-        <updated>20260819162718</updated>
+        <updated>20260819170705</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

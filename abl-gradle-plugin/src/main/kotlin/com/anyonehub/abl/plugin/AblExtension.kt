@@ -6,6 +6,7 @@ import org.gradle.api.provider.Property
 
 abstract class AblExtension {
     abstract val aapt2BinaryPath: Property<String>
+    abstract val cmakeBinaryPath: Property<String>
     abstract val androidJarPath: Property<String>
     abstract val manifestFile: RegularFileProperty
     abstract val resDir: DirectoryProperty

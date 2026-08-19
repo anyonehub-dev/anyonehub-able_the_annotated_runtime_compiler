@@ -20,45 +20,79 @@ class AblCompilerBridgeImpl : AblCompilerBridge {
         val errors = mutableListOf<String>()
 
         try {
+            val javaFiles = mutableListOf<File>()
+            val kotlinFiles = mutableListOf<File>()
+
             // Write sources to the temporary workspace
-            val sourceFiles = sources.map { (className, code) ->
-                val relativePath = className.replace('.', '/') + ".kt"
+            sources.forEach { (className, code) ->
+                val isJava = className.endsWith(".java")
+                val fqName = if (isJava) className.removeSuffix(".java") else className
+                val relativePath = fqName.replace('.', '/') + if (isJava) ".java" else ".kt"
                 val file = File(srcDir, relativePath)
                 file.parentFile?.mkdirs()
                 file.writeText(code)
-                file
-            }
-
-            val args = K2JVMCompilerArguments().apply {
-                freeArgs = sourceFiles.map { it.absolutePath }
-                destination = outDir.absolutePath
-                if (classpath.isNotEmpty()) {
-                    this.classpath = classpath.joinToString(File.pathSeparator) { it.absolutePath }
+                if (isJava) {
+                    javaFiles.add(file)
+                } else {
+                    kotlinFiles.add(file)
                 }
-                noStdlib = true
-                noReflect = true
-                jvmTarget = "21"
             }
 
-            val collector = object : MessageCollector {
-                override fun clear() { errors.clear() }
-                override fun hasErrors(): Boolean = errors.isNotEmpty()
-                override fun report(severity: CompilerMessageSeverity, message: String, location: CompilerMessageSourceLocation?) {
-                    val formatted = "[$severity] $message at $location"
-                    if (severity.isError) {
-                        errors.add(formatted)
-                        System.err.println("Compiler Error: $formatted")
-                    } else if (severity.isWarning) {
-                        System.err.println("Compiler Warning: $formatted")
+            if (kotlinFiles.isNotEmpty() || javaFiles.isNotEmpty()) {
+                val args = K2JVMCompilerArguments().apply {
+                    freeArgs = (kotlinFiles + javaFiles).map { it.absolutePath }
+                    destination = outDir.absolutePath
+                    if (classpath.isNotEmpty()) {
+                        this.classpath = classpath.joinToString(File.pathSeparator) { it.absolutePath }
+                    }
+                    noStdlib = true
+                    noReflect = true
+                    jvmTarget = "21"
+                }
+    
+                val collector = object : MessageCollector {
+                    override fun clear() { errors.clear() }
+                    override fun hasErrors(): Boolean = errors.isNotEmpty()
+                    override fun report(severity: CompilerMessageSeverity, message: String, location: CompilerMessageSourceLocation?) {
+                        val formatted = "[$severity] $message at $location"
+                        if (severity.isError) {
+                            errors.add(formatted)
+                            System.err.println("Compiler Error: $formatted")
+                        } else if (severity.isWarning) {
+                            System.err.println("Compiler Warning: $formatted")
+                        }
                     }
                 }
+    
+                val compiler = K2JVMCompiler()
+                val exitCode = compiler.exec(collector, Services.EMPTY, args)
+    
+                if (exitCode != org.jetbrains.kotlin.cli.common.ExitCode.OK || errors.isNotEmpty()) {
+                    throw AblCompilationException("Kotlin Compilation failed with exit code $exitCode.\nErrors:\n${errors.joinToString("\n")}")
+                }
             }
 
-            val compiler = K2JVMCompiler()
-            val exitCode = compiler.exec(collector, Services.EMPTY, args)
-
-            if (exitCode != org.jetbrains.kotlin.cli.common.ExitCode.OK || errors.isNotEmpty()) {
-                throw AblCompilationException("Compilation failed with exit code $exitCode.\nErrors:\n${errors.joinToString("\n")}")
+            if (javaFiles.isNotEmpty()) {
+                val ecjArgs = mutableListOf<String>()
+                val fullClasspath = classpath.map { it.absolutePath }.toMutableList()
+                fullClasspath.add(outDir.absolutePath) // To resolve Kotlin classes
+                
+                if (fullClasspath.isNotEmpty()) {
+                    ecjArgs.add("-cp")
+                    ecjArgs.add(fullClasspath.joinToString(File.pathSeparator))
+                }
+                ecjArgs.add("-d")
+                ecjArgs.add(outDir.absolutePath)
+                ecjArgs.add("-21") // JVM Target 21
+                ecjArgs.addAll(javaFiles.map { it.absolutePath })
+                
+                val outWriter = java.io.PrintWriter(System.out)
+                val errWriter = java.io.PrintWriter(System.err)
+                val ecjMain = org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null)
+                val success = ecjMain.compile(ecjArgs.toTypedArray())
+                if (!success) {
+                    throw AblCompilationException("ECJ Compilation failed for Java sources.")
+                }
             }
 
             // Harvest the compiled bytecode directly into memory

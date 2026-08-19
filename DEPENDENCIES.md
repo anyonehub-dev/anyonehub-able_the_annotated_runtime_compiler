@@ -10,6 +10,7 @@ The ABL Runtime Compiler engine and its Gradle Plugin wrapper rely on the follow
 - `org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0`
 - `org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0`
 - `org.jetbrains.kotlin:kotlin-compiler-embeddable:2.4.10` (Embedded Compiler)
+- `org.eclipse.jdt:ecj:3.36.0` (Eclipse Compiler for Java)
 - `com.android.tools:r8:9.4.12` (D8 Dexing)
 - `com.android.tools.build:apksig:8.5.0` (v2/v3 Signing)
 
@@ -41,7 +42,6 @@ dependencies {
 }
 
 abl {
-    aapt2BinaryPath.set(file("${project.projectDir}/src/main/jniLibs/arm64-v8a/libaapt2.so").absolutePath)
     manifestFile.set(file("src/main/AndroidManifest.xml"))
     resDir.set(file("src/main/res"))
 }

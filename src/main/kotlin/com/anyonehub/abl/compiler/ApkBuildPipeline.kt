@@ -45,7 +45,9 @@ class ApkBuildPipeline(
             
             val combinedSources = kotlinSources.toMutableMap()
             generatedJavaDir.walkTopDown().filter { it.extension == "java" }.forEach { 
-                combinedSources[it.name] = it.readText()
+                val relativePath = it.relativeTo(generatedJavaDir).path
+                val fqNameWithExt = relativePath.replace(File.separatorChar, '.')
+                combinedSources[fqNameWithExt] = it.readText()
             }
             
             // Step 2 & 3: Kotlin Compilation & In-Memory D8 DEXing
@@ -83,5 +85,17 @@ class ApkBuildPipeline(
             // Ensure no intermediate artifacts remain on device storage
             workspace.deleteRecursively()
         }
+    }
+
+    /**
+     * Resets the compilation workspace and purges all internal compiler caches.
+     * Use this between distinct project sessions to flush caches without restarting the app or leaking memory.
+     */
+    fun resetWorkspace(outputApk: File) {
+        val workspace = File(outputApk.parentFile, "build_workspace")
+        if (workspace.exists()) {
+            workspace.deleteRecursively()
+        }
+        com.anyonehub.abl.utils.AnnotationCache.clear()
     }
 }
