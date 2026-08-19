@@ -92,6 +92,11 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("com.google.flatbuffers", "com.anyonehub.abl.shadow.flatbuffers")
     
     exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+    
+    dependencies {
+        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib.*"))
+        exclude(dependency("org.jetbrains.kotlin:kotlin-reflect.*"))
+    }
 }
 
 // 2. Configure the standard jar task to merge our clean source code WITH the relocated dependencies
