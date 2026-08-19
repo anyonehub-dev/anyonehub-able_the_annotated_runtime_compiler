@@ -1,6 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm") version "2.4.10"
-    id("com.gradleup.shadow") version "8.3.0"
+    id("com.gradleup.shadow") version "9.6.1"
     `maven-publish`
 }
 
@@ -33,19 +35,37 @@ dependencies {
     implementation("com.android.tools.build:apksig:8.5.0")
 }
 
+// 1. Configure shadowJar to ONLY process dependencies (no source code)
+tasks.named<ShadowJar>("shadowJar") {
+    archiveClassifier.set("dependencies")
+    
+    // EXCLUDE OUR CLASSES FROM THE SHADOW JAR ENTIRELY to bypass the remapper crash
+    exclude("com/anyonehub/abl/**")
+    
+    configurations = listOf(project.configurations.runtimeClasspath.get())
+    
+    relocate("org.jetbrains.org.objectweb.asm", "com.anyonehub.abl.internal.asm")
+    relocate("org.jetbrains.kotlin", "com.anyonehub.abl.internal.kotlin")
+    
+    exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+}
+
+// 2. Configure the standard jar task to merge our clean source code WITH the relocated dependencies
 tasks.named<Jar>("jar") {
-    archiveClassifier.set("original")
+    archiveClassifier.set("") // This becomes the master artifact
+    
+    // Depend on the shadow task and extract its safely-relocated contents into our jar
+    dependsOn("shadowJar")
+    from(zipTree(tasks.named<ShadowJar>("shadowJar").get().archiveFile)) {
+        exclude("META-INF/MANIFEST.MF")
+    }
 }
 
-tasks.named<Jar>("shadowJar") {
-    archiveClassifier.set("")
-    // Note: minimize() is intentionally not called to preserve reflection targets and dynamic apksig classes.
-}
-
+// 3. Publish the standard merged jar, not the shadowJar
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifact(tasks.named("shadowJar"))
+            artifact(tasks.named("jar"))
         }
     }
 }

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#1A1A2E" />
+            <stop offset="1" stop-color="#16213E" />
+        </linearGradient>
+        <linearGradient id="bracket" x1="30" y1="70" x2="60" y2="130" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#00F0FF" />
+            <stop offset="1" stop-color="#0080FF" />
+        </linearGradient>
+        <linearGradient id="bracket2" x1="140" y1="70" x2="170" y2="130" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#00F0FF" />
+            <stop offset="1" stop-color="#0080FF" />
+        </linearGradient>
+        <linearGradient id="at" x1="65" y1="80" x2="130" y2="140" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#FF007A" />
+            <stop offset="1" stop-color="#9900FF" />
+        </linearGradient>
+    </defs>
+    <path d="M 100,0 C 155.228,0 200,44.772 200,100 C 200,155.228 155.228,200 100,200 C 44.772,200 0,155.228 0,100 C 0,44.772 44.772,0 100,0 Z" fill="url(#bg)"/>
+    <path d="M 60,70 L 30,100 L 60,130" stroke="url(#bracket)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M 140,70 L 170,100 L 140,130" stroke="url(#bracket2)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M 110,120 C 105,125 95,125 90,120 C 85,115 85,105 90,100 C 95,95 105,95 110,100 C 115,105 115,115 110,120 Z M 110,100 L 110,120 C 120,125 130,120 130,110 C 130,95 115,80 100,80 C 80,80 65,95 65,110 C 65,125 80,140 100,140" stroke="url(#at)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

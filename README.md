@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" alt="ABL Logo" width="200"/>
+</p>
+
 # ABL Annotated Runtime Compiler
 
 ABL is a revolutionary, fully on-device Android compilation engine designed to dynamically parse, compile, and execute annotated Kotlin code entirely on the metal. It strictly bypasses traditional build-time constraints like KSP and Gradle, outputting fully signed, deployable APKs directly from an Android device memory buffer.
