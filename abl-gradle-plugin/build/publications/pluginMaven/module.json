@@ -29,11 +29,11 @@
         {
           "name": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
           "url": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
-          "size": 33925,
-          "sha512": "b04ccd8af29e56f8fac75f2cb3529be5b06bbd482f00563533fb4864d2ed2c0c8db87cec51504bdfa833f31a4a1b892c86792bd720c5b644d9b29f9ca8ceec16",
-          "sha256": "c180d1a2efb4a1c301a213bb6a0016c22bfe07d1f170cdd1a2b95c0e6d7d46e8",
-          "sha1": "f7f2a63f5add948ef2450ba3e10dacb5c7bfc99e",
-          "md5": "ab629f942cc6b7e844adc8c914e466af"
+          "size": 33832,
+          "sha512": "4bf991eefd92dac76cbfa0466430ab94a65dd40ac7b1c5d6b51b0b45ceb393d2f093eb080928ee5c9ec79fda9e3b71d7ef5908ef756e99a265b3ac76618f7924",
+          "sha256": "807bbf45f65dad56700747a9c01a1d54d08fcc8b44515724f31deee92d7d7c03",
+          "sha1": "9864a5bd71b96b2954be4320bdc4e27529f2dd73",
+          "md5": "861d5df79eea99da5cfeac242b1a4913"
         }
       ]
     },
@@ -61,11 +61,11 @@
         {
           "name": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
           "url": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
-          "size": 33925,
-          "sha512": "b04ccd8af29e56f8fac75f2cb3529be5b06bbd482f00563533fb4864d2ed2c0c8db87cec51504bdfa833f31a4a1b892c86792bd720c5b644d9b29f9ca8ceec16",
-          "sha256": "c180d1a2efb4a1c301a213bb6a0016c22bfe07d1f170cdd1a2b95c0e6d7d46e8",
-          "sha1": "f7f2a63f5add948ef2450ba3e10dacb5c7bfc99e",
-          "md5": "ab629f942cc6b7e844adc8c914e466af"
+          "size": 33832,
+          "sha512": "4bf991eefd92dac76cbfa0466430ab94a65dd40ac7b1c5d6b51b0b45ceb393d2f093eb080928ee5c9ec79fda9e3b71d7ef5908ef756e99a265b3ac76618f7924",
+          "sha256": "807bbf45f65dad56700747a9c01a1d54d08fcc8b44515724f31deee92d7d7c03",
+          "sha1": "9864a5bd71b96b2954be4320bdc4e27529f2dd73",
+          "md5": "861d5df79eea99da5cfeac242b1a4913"
         }
       ]
     }

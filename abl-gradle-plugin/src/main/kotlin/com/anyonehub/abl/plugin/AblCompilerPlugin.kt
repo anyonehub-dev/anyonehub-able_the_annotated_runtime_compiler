@@ -72,13 +72,11 @@ class AblCompilerPlugin : Plugin<Project> {
                 task.ablDependencies.from(ablConfiguration)
                 task.dependsOn(bundleNativeTools, bundleNativeAssets)
                 
-                project.afterEvaluate {
+                task.sourceFiles.from(project.provider {
                     val sourceSets = project.extensions.findByName("sourceSets") as? SourceSetContainer
                     val mainSourceSet = sourceSets?.findByName("main")
-                    if (mainSourceSet != null) {
-                        task.sourceFiles.from(mainSourceSet.allSource.filter { it.extension == "kt" || it.extension == "java" })
-                    }
-                }
+                    mainSourceSet?.allSource?.filter { it.extension == "kt" || it.extension == "java" } ?: emptyList<java.io.File>()
+                })
             }
         })
     }

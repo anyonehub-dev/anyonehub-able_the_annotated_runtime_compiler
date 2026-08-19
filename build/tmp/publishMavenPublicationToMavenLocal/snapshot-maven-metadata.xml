@@ -3,20 +3,20 @@
   <groupId>com.anyonehub</groupId>
   <artifactId>abl-runtime-compiler</artifactId>
   <versioning>
-    <lastUpdated>20260819181750</lastUpdated>
+    <lastUpdated>20260819182701</lastUpdated>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
     <snapshotVersions>
       <snapshotVersion>
-        <extension>pom</extension>
-        <value>1.0-SNAPSHOT</value>
-        <updated>20260819181750</updated>
-      </snapshotVersion>
-      <snapshotVersion>
         <extension>jar</extension>
         <value>1.0-SNAPSHOT</value>
-        <updated>20260819181750</updated>
+        <updated>20260819182701</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.0-SNAPSHOT</value>
+        <updated>20260819182701</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
