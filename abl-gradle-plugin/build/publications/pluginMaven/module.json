@@ -3,9 +3,9 @@
   "component": {
     "group": "com.anyonehub",
     "module": "abl-gradle-plugin",
-    "version": "1.0-SNAPSHOT",
+    "version": "1.0.0",
     "attributes": {
-      "org.gradle.status": "integration"
+      "org.gradle.status": "release"
     }
   },
   "createdBy": {
@@ -27,8 +27,8 @@
       },
       "files": [
         {
-          "name": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
-          "url": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
+          "name": "abl-gradle-plugin-1.0.0.jar",
+          "url": "abl-gradle-plugin-1.0.0.jar",
           "size": 33963,
           "sha512": "c394b5006be18f8b492c87022fac79f8d11a659c97c20d511137273c9bbc6465ab01317860b76499e591d839c5e5fd58e3c4f10365039fd27e7d37d836f92299",
           "sha256": "57f2052195ebbd7dd659f1bfa1ea6a1bc8c30181bdff5ef01b54ef1a60c51a5c",
@@ -59,8 +59,8 @@
       ],
       "files": [
         {
-          "name": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
-          "url": "abl-gradle-plugin-1.0-SNAPSHOT.jar",
+          "name": "abl-gradle-plugin-1.0.0.jar",
+          "url": "abl-gradle-plugin-1.0.0.jar",
           "size": 33963,
           "sha512": "c394b5006be18f8b492c87022fac79f8d11a659c97c20d511137273c9bbc6465ab01317860b76499e591d839c5e5fd58e3c4f10365039fd27e7d37d836f92299",
           "sha256": "57f2052195ebbd7dd659f1bfa1ea6a1bc8c30181bdff5ef01b54ef1a60c51a5c",
